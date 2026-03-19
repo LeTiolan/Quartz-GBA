@@ -123,10 +123,20 @@ canvas.texturePixelated {
 div#menu {
     position: absolute;
     z-index: 30;
-    width: 200px; /* Fixed width for left-side menu */
-    height: 100%;
+    width: 100%; /* Expands to cover the entire width of the screen */
+    height: 100%; /* Expands to cover the entire height of the screen */
     left: 0;
     top: 0;
+    background-color: #f4f5f8; /* Exactly matches your Quartz theme background color */
+    opacity: 0; /* Hidden by default */
+    pointer-events: none;
+    transition: opacity 0.3s ease; /* Smooth fade-in effect */
+}
+
+/* This triggers the solid background when you click your sandwich button */
+.menu-active div#menu {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .menu {
@@ -178,9 +188,6 @@ div#menu {
     transform: translateX(5px);
     box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.5);
 }
-
-.playing .menu { opacity: 0; }
-.playing .menu:hover { opacity: 1; }
 
 .menu ul {
     visibility: hidden;
