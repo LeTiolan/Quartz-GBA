@@ -267,3 +267,13 @@ li.hide { display: none !important; }
 #hamburger-menu:active {
     transform: scale(0.9);
 }
+/* Calmly pulsing green animation for the Play button */
+@keyframes pulse-green {
+    0% { background-color: transparent; color: inherit; }
+    50% { background-color: rgba(40, 167, 69, 0.4); color: white; border-radius: 8px; }
+    100% { background-color: transparent; color: inherit; }
+}
+
+.flash-green {
+    animation: pulse-green 2s infinite ease-in-out;
+}
