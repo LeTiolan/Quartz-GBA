@@ -1,16 +1,16 @@
 /*
 |-----------------------------------------
-| Core CSS
+| Core CSS - Quartz Mineral Theme
 |-----------------------------------------
  */
 
 html, body {
-    font-family: Open Sans, Arial, sans-serif;
+    font-family: 'Open Sans', Arial, sans-serif;
     height: 100%;
-    width:100%;
+    width: 100%;
     margin: 0;
     padding: 0;
-    background: #000;
+    background: #f4f5f8; /* Soft off-white quartz base */
     overflow: hidden;
     box-sizing: border-box;
     -webkit-touch-callout: none;
@@ -21,8 +21,7 @@ html, body {
     user-select: none;
 }
 
-/* reset all list items */
-ul{
+ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -34,7 +33,7 @@ ul{
 }
 
 #main {
-    position:absolute;
+    position: absolute;
     top: 0px;
     left: 0px;
     right: 0px;
@@ -43,20 +42,17 @@ ul{
 
 /*
 |-----------------------------------------
-| Canvas
+| Canvas (The Game Screen)
 |-----------------------------------------
-|
-| Classes are automatically overwritten 
-| by the filter styles, therefore only
-| attributes and id's can be used.
-|
  */
 
 canvas {
     margin: auto;
     display: block;
     padding: 0px;
-    background-color: rgb(248, 248, 248);
+    background-color: #000; /* Keep inner canvas black for game borders */
+    border-radius: 8px; /* Slightly rounded game screen */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow */
     cursor: none;
 }
 
@@ -82,8 +78,11 @@ canvas.texturePixelated {
  */
 
 .message {
-    background: #6cc27d;
+    background: rgba(108, 194, 125, 0.9);
+    backdrop-filter: blur(4px);
+    border-radius: 16px;
     padding: 1em 2em;
+    margin: 1em;
     text-align: center;
     color: #fff;
     bottom: 0px;
@@ -91,139 +90,146 @@ canvas.texturePixelated {
     left: 0px;
     display: none;
     font-weight: bold;
-    vertical-align: bottom;
     font-family: monospace;
-    z-index: 1;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /*
 |-----------------------------------------
-| Main Menu
+| Main Menu (Quartz Styled)
 |-----------------------------------------
  */
 
-/* top level menu */
 div#menu {
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     width: 100%;
     height: 0px;
 }
+
 .menu {
     position: fixed;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    background: #fff;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    background: rgba(255, 255, 255, 0.85); /* Translucent glass/quartz */
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     transition: .3s ease;
-	cursor: pointer;
+    cursor: pointer;
+    color: #4a4a5a;
+    font-weight: 600;
 }
 
-/* auto hide menu while playing */
-.playing .menu{opacity: 0;}
-.playing .menu:hover{opacity: 0.9;}
+.playing .menu { opacity: 0; }
+.playing .menu:hover { opacity: 1; }
 
-/* sub level menu */
-.menu ul{
+.menu ul {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    top:100%;
-    left:0;
-    background-color: rgb(245, 245, 245);
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
-    transition: .3s ease;
+    top: 100%;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 0 0 12px 12px;
+    transition: .2s ease;
     z-index: 1;
+    overflow: hidden;
 }
 
-li.hide {
-    display: none !important;
-}
+li.hide { display: none !important; }
 
-/* bottom level nav */
-.menu ul ul{
-    top:0;
+.menu ul ul {
+    top: 0;
     left: 100%;
+    border-radius: 12px;
 }
 
-#menu_top li {
-    padding: .7em 1em;
-}
+#menu_top li { padding: .7em 1em; }
+.menu ul li { padding: .5em 1.2em !important; }
 
-.menu ul li {
-    padding: .3em 1em !important;
-}
-
-.menu li{
+.menu li {
     white-space: nowrap;
     position: relative;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.menu li:hover{
-    background: rgba(0,0,0,.1);
+.menu li:hover {
+    background: rgba(0, 0, 0, 0.05);
 }
 
-/* show sub nav on hover */
-.menu li:hover > ul{
+.menu li:hover > ul {
     visibility: visible;
     opacity: 1;
 }
 
 /*
 |-----------------------------------------
-| Touch Controls
+| Touch Controls (Bubbly Mineral Look)
 |-----------------------------------------
  */
 
-.touch-controls{
+.touch-controls {
     display: flex;
     padding: 1em;
     position: absolute;
     bottom: 0px;
     left: 0px;
     right: 0px;
+    align-items: center;
 }
 
-.touch-controls button{
+.touch-controls button {
     display: inline-block;
     -webkit-appearance: none;
-    border:0;
+    border: 1px solid rgba(255, 255, 255, 0.6);
     outline: 0;
-    background: #fff;
-    opacity: 0.7;
-    width: 3em;
-    height: 3em;
-    line-height: 3em;
+    background: linear-gradient(145deg, #ffffff, #e6e8eb); /* Quartz gradient */
+    border-radius: 24px; /* Bubbly rounded edges */
+    color: #4a4a5a;
+    font-weight: bold;
+    font-size: 0.85rem;
+    width: 4.5em; /* Widened slightly to fit text + emoji */
+    height: 3.5em;
+    line-height: 1.2em;
     text-align: center;
     cursor: pointer;
-    transition: .1s ease;
-    margin:.5em;
+    transition: all .1s ease-in-out;
+    margin: 0.4em;
+    box-shadow: 
+        4px 4px 8px rgba(166, 171, 189, 0.4), /* Outer dark shadow */
+        -4px -4px 8px rgba(255, 255, 255, 0.9); /* Outer light shadow */
 }
 
-.touch-controls button:active{
-    transform: scale(0.95);
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.4) inset;
+.touch-controls button:active {
+    transform: translateY(2px) scale(0.96);
+    background: #e6e8eb;
+    box-shadow: 
+        inset 4px 4px 8px rgba(166, 171, 189, 0.4),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.9);
 }
 
-.touch-dpad, .touch-buttons{
+.touch-dpad, .touch-buttons {
     flex-grow: 1;
     text-align: center;
 }
 
-.touch-buttons{
+.touch-buttons {
     align-self: flex-end;
 }
 
-.touch-dpad--up{
+.touch-dpad--up {
     flex-grow: 1;
     width: 100%;
 }
 
-/* Only show controls on portrait mode screens */
+/* Responsive Hide for Desktop */
 @media screen and (min-aspect-ratio: 1/1) {
-    .touch-controls{
+    .touch-controls {
         display: none;
     }
     #main {
