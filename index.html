@@ -258,6 +258,10 @@
                   gameContainer.msRequestFullscreen();
               }
           });
+			// Toggle Hamburger Menu and Touch Controls
+          document.getElementById('hamburger-menu').addEventListener('click', function() {
+              document.getElementById('container').classList.toggle('menu-active');
+          });
         </script>
     </body>
 </html>
