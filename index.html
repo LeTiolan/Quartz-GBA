@@ -297,18 +297,16 @@
 // RENDER LIBRARY MENU & PLAY SAVED GAMES
 // ==========================================
 function loadLibraryMenu() {
-    // Double-check that the database is actually ready
     if (!db) return;
 
     const transaction = db.transaction(["games"], "readonly");
     const store = transaction.objectStore("games");
-    const request = store.getAll(); // Fetches all saved games from IndexedDB
+    const request = store.getAll(); 
 
     request.onsuccess = function(event) {
         const games = event.target.result;
         const libraryList = document.getElementById('game-library-list');
 
-        // Clear out the current list (this removes the "No games" placeholder)
         libraryList.innerHTML = '';
 
         // --- NEW: FILTER OUT DUPLICATES ---
@@ -322,29 +320,52 @@ function loadLibraryMenu() {
             }
         });
 
-        // If the library is empty, put the placeholder message back
         if (uniqueGames.length === 0) {
             libraryList.innerHTML = '<li id="empty-library-msg" style="color: #888; cursor: default;">No games saved yet</li>';
             return;
         }
 
-        // Loop through our NEW CLEAN LIST and create the menu items
+        // --- NEW: LOOP THROUGH CLEAN LIST AND ADD DELETE BUTTON ---
         uniqueGames.forEach(game => {
             const li = document.createElement('li');
-            li.textContent = game.name;
+            li.style.display = 'flex'; 
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
 
-            // When this specific game is clicked in the menu, load it up!
-            li.addEventListener('click', function(e) {
-                // Prevent the click from triggering any sub-menu toggles
+            // 1. The clickable game name
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = game.name;
+            nameSpan.style.cursor = 'pointer';
+            nameSpan.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 playGameFromLibrary(game.fileData);
             });
 
+            // 2. The delete button
+            const deleteBtn = document.createElement('span');
+            deleteBtn.textContent = '❌'; 
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.style.fontSize = '0.8em';
+            deleteBtn.title = "Delete game";
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                if(confirm("Are you sure you want to delete " + game.name + " from your browser memory?")) {
+                    const deleteTx = db.transaction(["games"], "readwrite");
+                    const deleteStore = deleteTx.objectStore("games");
+                    const deleteReq = deleteStore.delete(game.name); 
+                    deleteReq.onsuccess = function() {
+                        loadLibraryMenu(); // Instantly refresh the menu
+                    };
+                }
+            });
+
+            // Attach both to the list item
+            li.appendChild(nameSpan);
+            li.appendChild(deleteBtn);
             libraryList.appendChild(li);
         });
     };
 }
-
 function playGameFromLibrary(fileData) {
     // We use a modern trick with DataTransfer to spoof a file upload.
     // This makes your existing 'rom_load' glue scripts think the user just uploaded it normally!
