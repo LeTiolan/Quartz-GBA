@@ -134,14 +134,14 @@ div#menu {
     display: flex;
     flex-direction: column;
     width: 220px;
-    height: 95%; /* Slightly short of the bottom for a "floating" look */
-    top: 2.5%; /* Centered vertically */
-    left: 15px; /* Floating away from the edge */
-    background: rgba(255, 255, 255, 0.6); /* Translucent Quartz */
+    height: 95%;
+    top: 2.5%;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 30px; /* Bubbly shape */
+    border-radius: 30px;
     box-shadow: 
         10px 10px 20px rgba(166, 171, 189, 0.2),
         -10px -10px 20px rgba(255, 255, 255, 0.7);
@@ -149,6 +149,18 @@ div#menu {
     color: #444a5e;
     padding-top: 70px;
     z-index: 30;
+    
+    /* Hide off-screen by default */
+    transform: translateX(-150%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Slide in when active */
+.menu-active .menu {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* Quartz Menu Item Styling */
@@ -226,17 +238,30 @@ li.hide { display: none !important; }
 
 .touch-controls {
     display: flex;
-    flex-direction: column; /* Stack D-Pad and Buttons vertically */
+    flex-direction: column;
     padding: 2em 1em;
     position: absolute;
-    top: 100px; /* Position below the top menu area */
+    top: 100px;
     left: 0px;
     bottom: 0px;
     width: fit-content;
     align-items: center;
     justify-content: flex-start;
-    gap: 2em; /* Space between the D-Pad and Action buttons */
-    pointer-events: none; /* Allows clicking "through" the container to the game if needed */
+    gap: 2em;
+    z-index: 50; /* Bring above game */
+    
+    /* Hide off-screen by default */
+    transform: translateX(-150%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Slide in when active */
+.menu-active .touch-controls {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .touch-controls button {
@@ -287,18 +312,6 @@ li.hide { display: none !important; }
     width: 100%;
 }
 
-/* Responsive Hide for Desktop */
-@media screen and (min-aspect-ratio: 1/1) {
-    .touch-controls {
-        display: none;
-    }
-    #main {
-        display: flex;
-        justify-content: center;
-        flex-grow: 1;
-        align-items: center;
-    }
-}
 /*
 |-----------------------------------------
 | Hamburger Menu Button (Quartz)
@@ -306,9 +319,9 @@ li.hide { display: none !important; }
  */
 #hamburger-menu {
     position: absolute;
-    top: 20px;
-    left: 20px; 
-    z-index: 40;
+    top: 0px; /* Snapped exactly to the top */
+    left: 0px; /* Snapped exactly to the left */
+    z-index: 100; /* Keep it above everything */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -318,8 +331,8 @@ li.hide { display: none !important; }
     height: 3.5em;
     border: 2px solid rgba(255, 255, 255, 0.8);
     background: linear-gradient(145deg, #ffffff, #d8dbe2);
-    border-radius: 50%;
-    box-shadow: 4px 4px 8px rgba(166, 171, 189, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.9);
+    border-radius: 0 0 20px 0; /* Square top-left, bubbly bottom-right */
+    box-shadow: 4px 4px 8px rgba(166, 171, 189, 0.4);
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 }
