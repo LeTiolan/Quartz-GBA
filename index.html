@@ -240,6 +240,30 @@
           document.getElementById('hamburger-menu').addEventListener('click', function() {
               document.getElementById('container').classList.toggle('menu-active');
           });
+			// ==========================================
+          // GAME LIBRARY SYSTEM (IndexedDB)
+          // ==========================================
+          let db;
+          const dbRequest = indexedDB.open("EmulatorGameLibrary", 1);
+
+          // This creates the database the first time you ever open the page
+          dbRequest.onupgradeneeded = function(event) {
+              db = event.target.result;
+              if (!db.objectStoreNames.contains("games")) {
+                  db.createObjectStore("games", { keyPath: "name" });
+              }
+          };
+
+          // This connects to the database every time you load the page
+          dbRequest.onsuccess = function(event) {
+              db = event.target.result;
+              console.log("Database connected successfully!");
+              // loadLibraryMenu(); <-- We will activate this in the next step!
+          };
+
+          dbRequest.onerror = function(event) {
+              console.error("Database error: ", event.target.error);
+          };
         </script>
     </body>
 </html>
