@@ -216,13 +216,8 @@
           });
 
          // Auto-Fullscreen and Play Button Flash when a game is loaded
-    document.getElementById('rom_load').addEventListener('change', function(event) {
-              const file = event.target.files[0];
-              if (!file) return;
-
-              // THIS RUNS THE GAME:
-              attachROM(file);
-
+    // File Picker Listener (Starts game via glue code)
+          document.getElementById('rom_load').addEventListener('change', function() {
               // 1. Make the Play button flash green
               document.getElementById('play').classList.add('flash-green');
 
@@ -233,11 +228,11 @@
               }
           });
 
-     // Stop flashing, go Fullscreen, and close menu when Play is clicked
+    // Stop flashing, go Fullscreen, and close menu when Play is clicked
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
-              // TRIGGER FULLSCREEN HERE INSTEAD
+              // Trigger Fullscreen ONLY when they hit play
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
                   gameContainer.requestFullscreen();
@@ -245,11 +240,12 @@
                   gameContainer.webkitRequestFullscreen();
               }
 
+              // Close the menu
               document.getElementById('container').classList.remove('menu-active'); 
 
-              // Automatically "wake up" the sound engine
+              // Ensure sound is awake
               const soundBox = document.getElementById('sound');
-              if (soundBox.checked) {
+              if (soundBox && soundBox.checked) {
                   soundBox.dispatchEvent(new Event('change'));
               }
           });
