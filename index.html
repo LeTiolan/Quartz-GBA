@@ -76,12 +76,18 @@
 </button>
             <div id="menu" class="paused">
                 <ul class="menu" id="menu_top">
-                    <li>
+                   <li>
                         File
                         <ul>
                             <li style="display: none;"><span>BIOS: </span> <input type="file" id="bios_load" class="files"></li>
-                            <li><span>Game: </span> <input type="file" id="rom_load" class="files"></li>
+                            <li><span>Load New Game: </span> <input type="file" id="rom_load" class="files"></li>
                         </ul>
+                    </li>
+                    <li>
+                        Game Library
+                        <ul id="game-library-list">
+                            <li id="empty-library-msg" style="color: #888; cursor: default;">No games saved yet</li>
+                            </ul>
                     </li>
                     <li id="play" class="show">Play</li>
                     <li id="pause" class="hide">Pause</li>
