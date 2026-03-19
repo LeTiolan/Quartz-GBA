@@ -231,10 +231,16 @@
               }
           });
 
-         // Stop flashing and close menu when Play is clicked
+     // Stop flashing and close menu when Play is clicked
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
-              document.getElementById('container').classList.remove('menu-active'); // This closes the menu!
+              document.getElementById('container').classList.remove('menu-active'); 
+
+              // Automatically "wake up" the sound engine
+              const soundBox = document.getElementById('sound');
+              if (soundBox.checked) {
+                  soundBox.dispatchEvent(new Event('change'));
+              }
           });
 			// Toggle Hamburger Menu and Touch Controls
           document.getElementById('hamburger-menu').addEventListener('click', function() {
