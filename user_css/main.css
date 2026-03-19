@@ -289,3 +289,23 @@ li.hide { display: none !important; }
 .flash-green {
     animation: pulse-green 2s infinite ease-in-out;
 }
+/* Customize the scrollbar track (the background) */
+#game-library-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#game-library-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2); 
+    border-radius: 10px;
+}
+
+/* Customize the scrollbar thumb (the part you drag) */
+#game-library-list::-webkit-scrollbar-thumb {
+    background: rgba(166, 171, 189, 0.6); 
+    border-radius: 10px;
+}
+
+/* Make it slightly darker when hovered */
+#game-library-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(166, 171, 189, 0.9); 
+}
