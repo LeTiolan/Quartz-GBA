@@ -537,6 +537,17 @@ window.addEventListener("gamepadconnected", () => {
         pollGamepads();
     }
 });
+			// ==========================================
+// FORCE SAVE SYNC ON CLOSE
+// ==========================================
+// This forces the emulator to flush in-game saves to your browser's permanent storage 
+// right before you close the tab or refresh the page.
+window.addEventListener('beforeunload', function() {
+    if (typeof IodineGUI !== 'undefined' && IodineGUI.Iodine) {
+        // Pausing forces the save data in RAM to commit to LocalStorage
+        IodineGUI.Iodine.pause(); 
+    }
+});
 
         </script>
     </body>
