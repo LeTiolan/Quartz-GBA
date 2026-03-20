@@ -52,36 +52,21 @@ ul {
 | Canvas (The Game Screen)
 |-----------------------------------------
  */
-
 canvas {
     margin: auto;
     display: block;
     padding: 0px;
-    
-    /* Fill space but respect the max limits */
     width: 100%;
     height: 100%;
-    
-    /* Leaves exactly a 12px (~1/8th inch) gap on all sides */
     max-width: calc(100vw - 24px);
     max-height: calc(100vh - 24px);
-    
-    /* CRITICAL: Forces 3:2 GBA aspect ratio so it never warps */
     object-fit: contain; 
-    
     background-color: #000; 
     border-radius: 8px; 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
     cursor: none;
-}
 
-canvas.textureSmooth {
-    image-rendering: auto;
-    image-rendering: optimizeQuality;
-    -ms-interpolation-mode: bicubic;
-}
-
-canvas.texturePixelated {
+    /* SET OFF BY DEFAULT: Force Sharp/Pixelated rendering */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: -o-crisp-edges;
     image-rendering: -moz-crisp-edges;
@@ -89,6 +74,15 @@ canvas.texturePixelated {
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+/* This class will only be applied when you check the "Smooth Scaling" box */
+canvas.textureSmooth {
+    image-rendering: auto;
+    image-rendering: optimizeQuality;
+    -ms-interpolation-mode: bicubic;
+}
+
+/* FIX: Remove the very last '}' at the bottom of the file (after the scrollbar styles) */
 
 /*
 |-----------------------------------------
