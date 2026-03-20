@@ -405,66 +405,80 @@ function playGameFromLibrary(fileData) {
 
     // We removed the automatic menu-closing line here so you can hit Play yourself!
 }
-			// ==========================================
-// GAMEPAD / BLUETOOTH CONTROLLER SUPPORT (STEP 1)
 // ==========================================
-const gamepadState = {}; // Remembers which buttons are currently pressed
+// GAMEPAD / BLUETOOTH CONTROLLER REMAPPING (STEP 2)
+// ==========================================
+const gamepadState = {}; 
 
-// Default Keyboard mappings for IodineGBA:
-// A=88(X), B=90(Z), L=65(A), R=83(S), Start=13(Enter), Select=16(Shift)
-// Up=38, Down=40, Left=37, Right=39
-const gamepadBindings = {
-    0: 88,  // Controller A button -> Keyboard X (GBA A)
-    1: 90,  // Controller B button -> Keyboard Z (GBA B)
-    4: 65,  // Controller Left Bumper -> Keyboard A (GBA L)
-    5: 83,  // Controller Right Bumper -> Keyboard S (GBA R)
-    8: 16,  // Controller Select -> Keyboard Shift (GBA Select)
-    9: 13,  // Controller Start -> Keyboard Enter (GBA Start)
-    12: 38, // Controller D-Pad Up -> Keyboard Up Arrow
-    13: 40, // Controller D-Pad Down -> Keyboard Down Arrow
-    14: 37, // Controller D-Pad Left -> Keyboard Left Arrow
-    15: 39  // Controller D-Pad Right -> Keyboard Right Arrow
+// Load saved custom controls, or use defaults
+let gamepadBindings = JSON.parse(localStorage.getItem('customGamepadBindings')) || {
+    0: 88, 1: 90, 4: 65, 5: 83, 8: 16, 9: 13, 12: 38, 13: 40, 14: 37, 15: 39
 };
 
-// Function to trick the browser into thinking a keyboard key was pressed
+let isRemapping = false;
+let remapGbaKey = null;
+let remapButtonElement = null;
+
+// Setup the UI Buttons
+const remapButtons = document.querySelectorAll('.remap-btn');
+remapButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.stopPropagation(); // Keep menu open
+        remapButtons.forEach(b => b.innerText = "Map"); // Reset others
+        this.innerText = "Press..."; 
+        isRemapping = true;
+        remapGbaKey = parseInt(this.getAttribute('data-gba-key'));
+        remapButtonElement = this;
+    });
+});
+
 function simulateKey(keyCode, isKeyDown) {
     const eventType = isKeyDown ? 'keydown' : 'keyup';
-    const e = new KeyboardEvent(eventType, {
-        bubbles: true, cancelable: true, keyCode: keyCode, which: keyCode
-    });
-    document.dispatchEvent(e); // Send the fake keypress to the emulator
+    const e = new KeyboardEvent(eventType, { bubbles: true, cancelable: true, keyCode: keyCode, which: keyCode });
+    document.dispatchEvent(e);
 }
 
-// The main loop that constantly checks if you are pressing a controller button
 function pollGamepads() {
     const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-    const pad = gamepads[0]; // Check player 1 (first connected controller)
+    const pad = gamepads[0]; 
     
     if (pad) {
-        // Loop through all buttons on the controller
         for (let i = 0; i < pad.buttons.length; i++) {
             const isPressed = pad.buttons[i].pressed;
             
-            // If the button state changed (just pressed or just released)
             if (isPressed !== gamepadState[i]) {
-                gamepadState[i] = isPressed; // Update memory
+                gamepadState[i] = isPressed; 
                 
-                // If this button is mapped to a GBA key, trigger it!
-                if (gamepadBindings[i]) {
-                    simulateKey(gamepadBindings[i], isPressed);
+                if (isPressed) { 
+                    if (isRemapping) {
+                        // Clear old bindings for this GBA key
+                        for (let key in gamepadBindings) {
+                            if (gamepadBindings[key] === remapGbaKey) delete gamepadBindings[key];
+                        }
+                        // Save the new binding!
+                        gamepadBindings[i] = remapGbaKey;
+                        localStorage.setItem('customGamepadBindings', JSON.stringify(gamepadBindings));
+                        
+                        remapButtonElement.innerText = "Mapped!";
+                        isRemapping = false;
+                        remapGbaKey = null;
+                        remapButtonElement = null;
+                    } else if (gamepadBindings[i]) {
+                        simulateKey(gamepadBindings[i], true); // Play game
+                    }
+                } else { 
+                    if (!isRemapping && gamepadBindings[i]) {
+                        simulateKey(gamepadBindings[i], false); // Release button
+                    }
                 }
             }
         }
     }
-    
-    // Check again right before the screen draws the next frame (60 times a second)
     requestAnimationFrame(pollGamepads);
 }
 
-// Start checking for controllers when one connects
 window.addEventListener("gamepadconnected", function(e) {
-    console.log("Controller connected! " + e.gamepad.id);
-    pollGamepads(); // Start the engine
+    pollGamepads(); 
 });
         </script>
     </body>
