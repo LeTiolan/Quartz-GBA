@@ -246,10 +246,6 @@
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
-              // --- ADD THIS LINE HERE ---
-              // This forces the HTML5 Canvas to stay pixelated, overriding the emulator's core code.
-              document.getElementById('emulator_target').getContext('2d').imageSmoothingEnabled = false;
-              
               // Trigger Fullscreen
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
