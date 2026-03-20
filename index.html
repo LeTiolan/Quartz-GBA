@@ -501,30 +501,28 @@ function pollGamepads() {
 window.addEventListener("gamepadconnected", function(e) {
     pollGamepads(); 
 });
-			// ==========================================
-// SMOOTH SCALING TOGGLE logic
-// ==========================================
+// Optimized Brightness & Scaling
 const smoothToggle = document.getElementById('toggleSmoothScaling');
-const gbaCanvas = document.getElementById('emulator_target');
-
-smoothToggle.addEventListener('change', function() {
-    if (this.checked) {
-        // If checked, add the "Smooth" class
-        gbaCanvas.classList.add('textureSmooth');
-    } else {
-        // If unchecked, remove it (reverting to default pixelated look)
-        gbaCanvas.classList.remove('textureSmooth');
-    }
-});
-		// ==========================================
-// BRIGHTNESS SLIDER (10 Levels)
-// ==========================================
 const brightnessSlider = document.getElementById('brightnessSlider');
 const gbaCanvas = document.getElementById('emulator_target');
 
-brightnessSlider.addEventListener('input', function() {
-    // Moves in 10% increments because of the 0.2 step in your HTML
-    gbaCanvas.style.filter = `brightness(${this.value})`;
+// Scaling Toggle
+smoothToggle.addEventListener('change', () => {
+    gbaCanvas.classList.toggle('textureSmooth', smoothToggle.checked);
+});
+
+// Brightness (10 Steps)
+brightnessSlider.addEventListener('input', () => {
+    gbaCanvas.style.filter = `brightness(${brightnessSlider.value})`;
+});
+
+// Fix Gamepad initialization
+window.addEventListener("gamepadconnected", () => {
+    // Only start the loop if it's not already running
+    if (!window.gamepadLoopActive) {
+        window.gamepadLoopActive = true;
+        pollGamepads();
+    }
 });
         </script>
     </body>
