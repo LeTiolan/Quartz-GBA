@@ -110,8 +110,8 @@
                             <li>
                                 <input type="checkbox" id="offthread-gpu" checked="checked"> GPU off-thread
                             </li>
-                         <li>
-                                <input type="checkbox" id="sound" checked="checked"> Sound
+                     <li>
+                                <input type="checkbox" id="sound"> Sound
                             </li>
                             
                             <li>
@@ -232,6 +232,12 @@
                   gameContainer.requestFullscreen();
               } else if (gameContainer.webkitRequestFullscreen) { 
                   gameContainer.webkitRequestFullscreen();
+              }
+
+              // Route your physical click to the emulator's native sound switch
+              const soundBox = document.getElementById('sound');
+              if (soundBox && !soundBox.checked) {
+                  soundBox.click(); 
               }
 
               // Close the menu
