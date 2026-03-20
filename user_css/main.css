@@ -142,7 +142,7 @@ div#menu {
     position: fixed;
     display: flex;
     flex-direction: column;
-    width: 290px; /* <--- NEW: Made the menu wider */
+    width: 290px; /* <--- Kept wider so your buttons fit nicely */
     height: 95%;
     top: 2.5%;
     left: 15px;
@@ -157,13 +157,10 @@ div#menu {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     color: #444a5e;
     padding-top: 70px;
-    padding-bottom: 20px; /* <--- NEW: Gives a little breathing room at the bottom */
     z-index: 30;
     
-    overflow-y: auto; /* <--- NEW: Automatically adds a vertical scrollbar if needed! */
-    overflow-x: hidden; /* <--- NEW: Prevents weird side-to-side scrolling */
+    /* Removed the overflow rules that were hiding your submenus! */
     
-    /* Hide off-screen by default */
     transform: translateX(-150%);
     opacity: 0;
     pointer-events: none;
