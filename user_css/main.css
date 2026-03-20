@@ -53,25 +53,37 @@ ul {
 |-----------------------------------------
  */
 canvas {
-    /* ... keep your existing layout rules ... */
+    margin: auto;
+    display: block;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    object-fit: contain; 
+    background-color: #000; 
+    border-radius: 8px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+    cursor: none;
 
-    /* DEFAULT: Sharp/Pixelated (Smooth Scaling OFF) */
+    /* SET OFF BY DEFAULT: Force Sharp/Pixelated rendering */
     image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
     image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
-    
-    /* Makes the 10-step brightness transitions feel fluid */
+
+    /* Makes brightness changes feel smooth and high-quality */
     transition: filter 0.1s linear;
 }
 
-/* Activated only when the Smooth Scaling checkbox is checked */
+/* Applied via the "Smooth Scaling" checkbox */
 canvas.textureSmooth {
     image-rendering: auto;
     image-rendering: optimizeQuality;
     -ms-interpolation-mode: bicubic;
 }
-
 /*
 |-----------------------------------------
 | Messages
