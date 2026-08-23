@@ -5,5 +5,12 @@
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "description": "A Game Boy Advance emulator web app."
+  "description": "A Game Boy Advance emulator web app.",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
